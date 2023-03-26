@@ -2,6 +2,7 @@ import cv2
 import argparse
 import Utils.DataUtils as DataUtils
 import Utils.FeatureUtils as FeatureUtils
+from getInliers import Fundamental_Matrix
 from IPython import embed
 
 if __name__ == '__main__':
@@ -19,5 +20,15 @@ if __name__ == '__main__':
 
     # Get saved matches
     feature_utils = FeatureUtils()
+    fundamental_matrix = Fundamental_Matrix(args)
+
     matched_features = feature_utils.read_matching_files(args.basePath)
-    embed()
+
+    # image_pair = list(matched_features.keys())[0]
+    image_pair = (1, 2)
+    
+    feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], matched_features[image_pair], "Matched Pairs")
+
+    inliers = fundamental_matrix.perform_ransac(image_pair)
+
+    feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], inliers[image_pair], "Inlier Pairs")
