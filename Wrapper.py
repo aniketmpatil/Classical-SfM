@@ -1,6 +1,8 @@
 import cv2
 import argparse
 import Utils.DataUtils as DataUtils
+import Utils.FeatureUtils as FeatureUtils
+from IPython import embed
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -14,3 +16,8 @@ if __name__ == '__main__':
     K = DataUtils.load_camera_instrinsics(args.basePath)
     print("Camera Intrinsics Matrix:")
     print(K)
+
+    # Get saved matches
+    feature_utils = FeatureUtils()
+    matched_features = feature_utils.read_matching_files(args.basePath)
+    embed()
