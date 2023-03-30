@@ -12,6 +12,7 @@ class Fundamental_Matrix:
         self.num_inliers = 0
         self.iter_inliers = {}
         self.final_inliers = {}
+        self.F = np.zeros((3, 3))
         
         self.feature_utils = FeatureUtils()
         self.matched_features = self.feature_utils.read_matching_files(args.basePath)
@@ -34,6 +35,7 @@ class Fundamental_Matrix:
 
     def perform_ransac(self, image_pair):
         count_inliers = 0
+        self.num_inliers = 0
         for i in range(self.num_iters):
             self.iter_inliers.clear()
 
@@ -60,6 +62,7 @@ class Fundamental_Matrix:
             if (self.num_inliers < count_inliers):
                 self.num_inliers = count_inliers
                 self.final_inliers[image_pair] = self.iter_inliers[image_pair]
+                self.F = F
                 # embed()
 
         return self.final_inliers
@@ -72,6 +75,9 @@ class Fundamental_Matrix:
             self.iter_inliers[(image_i_idx, image_j_idx)].append([(image_i_u, image_i_v), (image_j_u, image_j_v)])
         else:
             self.iter_inliers[(image_i_idx, image_j_idx)] = [[(image_i_u, image_i_v), (image_j_u, image_j_v)]]
+
+    def get_F(self):
+        return self.F
 
 
 # parser = argparse.ArgumentParser()
