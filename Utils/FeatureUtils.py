@@ -6,8 +6,8 @@ from IPython import embed
 class FeatureUtils:
     def __init__(self):
         self.n_features = []
-        self.matching_files = ['matching1.txt']
-        self.match_file_idxes = [1]
+        self.matching_files = ['matching2.txt']
+        self.match_file_idxes = [2]
         self.matches = {}
         self.total_matches = 0
         # self.inliers = {}

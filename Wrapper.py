@@ -25,7 +25,7 @@ if __name__ == '__main__':
     matched_features = feature_utils.read_matching_files(args.basePath)
 
     # image_pair = list(matched_features.keys())[0]
-    pairs = [(1, 2), (1, 4), (1, 5)]
+    pairs = [(2, 3), (2, 4), (2, 5)]
     
     for image_pair in pairs:
         feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], matched_features[image_pair], f'Matched Pairs - {image_pair}')

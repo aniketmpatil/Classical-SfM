@@ -6,8 +6,8 @@ import numpy as np
 
 class Fundamental_Matrix:
     def __init__(self, args):
-        self.epsilon = 0.5                # epsilon
-        self.num_iters = 500              # M
+        self.epsilon = 0.1                # epsilon
+        self.num_iters = 2000              # M
         # self.num_points_ransac = 300    # N
         self.num_inliers = 0
         self.iter_inliers = {}
@@ -31,7 +31,13 @@ class Fundamental_Matrix:
 
         F = vh[:][8]
         F = F.reshape((3,3))
-        return F
+
+        uf,s_f,vf = np.linalg.svd(F,full_matrices=True)
+        s_f[-1] = 0
+        s_f = np.diag(s_f)
+        F_new = np.dot(uf,np.dot(s_f,vf))
+        # Ft = uf @ s_f @ vf
+        return F_new
 
     def perform_ransac(self, image_pair):
         count_inliers = 0
