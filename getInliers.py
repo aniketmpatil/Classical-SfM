@@ -2,6 +2,7 @@ from IPython import embed
 import argparse
 import random
 import Utils.FeatureUtils as FeatureUtils
+import Utils.DataUtils as DataUtils
 import numpy as np
 
 class Fundamental_Matrix:
@@ -13,9 +14,11 @@ class Fundamental_Matrix:
         self.iter_inliers = {}
         self.final_inliers = {}
         self.F = np.zeros((3, 3))
+        self.E = np.zeros((3, 3))
         
         self.feature_utils = FeatureUtils()
-        self.matched_features = self.feature_utils.read_matching_files(args.basePath)
+        self.basePath = args.basePath
+        self.matched_features = self.feature_utils.read_matching_files(self.basePath)
         random.seed(40)
 
     def estimate_fundamental(self, eight_points):
@@ -84,6 +87,19 @@ class Fundamental_Matrix:
 
     def get_F(self):
         return self.F
+    
+    def get_essential_from_fundamental(self):
+        F = self.F
+        K = DataUtils.load_camera_instrinsics(self.basePath)
+        E = np.matmul(np.matmul(K.T, F), K)
+        U, S, V = np.linalg.svd(E)
+        S = [1, 1, 0]
+        self.E = np.dot(U, np.dot(np.diag(S), V))
+
+        return self.E
+    
+    def get_E(self):
+        return self.E
 
 
 # parser = argparse.ArgumentParser()
