@@ -16,9 +16,9 @@ class Fundamental_Matrix:
         self.F = np.zeros((3, 3))
         self.E = np.zeros((3, 3))
         
+        self.data_utils = DataUtils(args.basePath)
         self.feature_utils = FeatureUtils()
-        self.basePath = args.basePath
-        self.matched_features = self.feature_utils.read_matching_files(self.basePath)
+        self.matched_features = self.feature_utils.read_matching_files(args.basePath)
         random.seed(40)
 
     def estimate_fundamental(self, eight_points):
@@ -61,18 +61,17 @@ class Fundamental_Matrix:
                 point2 = np.expand_dims(np.array([point2[0], point2[1], 1]), axis=1)
 
                 product = abs(np.matmul(np.matmul(point2.T, F), point1))
-                # embed()
+
                 if product < self.epsilon:
                     count_inliers += 1
                     self.update_inliers(image_pair, point_pair)
                     # self.feature_utils.add_inliers(image_pair, point_pair)
-                    
 
             if (self.num_inliers < count_inliers):
                 self.num_inliers = count_inliers
                 self.final_inliers[image_pair] = self.iter_inliers[image_pair]
                 self.F = F
-                # embed()
+
 
         return self.final_inliers
     
@@ -90,7 +89,7 @@ class Fundamental_Matrix:
     
     def get_essential_from_fundamental(self):
         F = self.F
-        K = DataUtils.load_camera_instrinsics(self.basePath)
+        K = self.data_utils.load_camera_instrinsics()
         E = np.matmul(np.matmul(K.T, F), K)
         U, S, V = np.linalg.svd(E)
         S = [1, 1, 0]

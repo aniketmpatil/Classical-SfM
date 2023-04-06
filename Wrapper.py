@@ -8,14 +8,15 @@ from IPython import embed
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--basePath',default='./Data/')
+    parser.add_argument('--basePath', default='./Data/')
     
     args = parser.parse_args()
 
-    imgs, image_names = DataUtils.import_images(args.basePath)
+    data_utils = DataUtils(args.basePath)
+    imgs, image_names = data_utils.import_images()
     print("Imported image files: ", len(image_names))
 
-    K = DataUtils.load_camera_instrinsics(args.basePath)
+    K = data_utils.load_camera_instrinsics()
     print("Camera Intrinsics Matrix:")
     print(K)
 
@@ -26,7 +27,7 @@ if __name__ == '__main__':
     matched_features = feature_utils.read_matching_files(args.basePath)
 
     # image_pair = list(matched_features.keys())[0]
-    pairs = [(1,2)]
+    pairs = [(2,3)]
     
     for image_pair in pairs:
         feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], matched_features[image_pair], f'Matched Pairs - {image_pair}')
@@ -37,7 +38,7 @@ if __name__ == '__main__':
 
         extract_cam_pose(E)
 
-        # feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], inliers[image_pair], f'Inlier Pairs - {image_pair}')
+        feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], inliers[image_pair], f'Inlier Pairs - {image_pair}')
 
     
         
