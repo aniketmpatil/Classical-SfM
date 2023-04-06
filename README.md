@@ -16,4 +16,4 @@ RBE549 Computer Vision, Spring 2023, [Project 3 Description](https://rbe549.gith
 ![feature_matches](Outputs/feature_matches.png)
 
 ### Inlier Features (after RANSAC)
-![feature_matches](Outputs/feature_matches.png)
+![feature_matches](Outputs/inlier_features_ransac.png)
