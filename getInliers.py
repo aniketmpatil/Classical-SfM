@@ -4,6 +4,7 @@ import random
 import Utils.FeatureUtils as FeatureUtils
 import Utils.DataUtils as DataUtils
 import numpy as np
+import cv2
 
 class Fundamental_Matrix:
     def __init__(self, args):
@@ -99,11 +100,29 @@ class Fundamental_Matrix:
     
     def get_E(self):
         return self.E
+    
+    def draw_line_from_eqn(self, img, arr):
+        a, b, c = arr
+        x1, y1 = 0, int(-c/b)
+        x2, y2 = img.shape[1], int((-c-a*img.shape[1])/b)
 
+        # Draw the line on the image
+        cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 1)
+    
+    def show_epipolar_lines(self, correspondences, img1, img2):
+        for point_pair in correspondences:
+            img1_pt = point_pair[0]
+            img2_pt = point_pair[1]
 
-# parser = argparse.ArgumentParser()
-# parser.add_argument('--basePath',default='./Data/')
+            img1_pt = np.expand_dims([img1_pt[0], img1_pt[1], 1], 1)
+            img2_pt = np.expand_dims([img2_pt[0], img2_pt[1], 1], 1)
 
-# args = parser.parse_args()
-# fundamental_matrix = Fundamental_Matrix()
-# fundamental_matrix.perform_ransac()
+            img1_line = np.matmul(self.F, img2_pt)
+            img2_line = np.matmul(self.F, img1_pt)
+
+            self.draw_line_from_eqn(img1, img1_line)
+            self.draw_line_from_eqn(img2, img2_line)
+
+        cv2.imshow("Epipolar Lines", np.hstack((img1, img2)))
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
