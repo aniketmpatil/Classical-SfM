@@ -4,6 +4,7 @@ import Utils.DataUtils as DataUtils
 import Utils.FeatureUtils as FeatureUtils
 from getInliers import Fundamental_Matrix
 from extract_camera_pose import *
+from LinearTriangulation import*
 from IPython import embed
 
 if __name__ == '__main__':
@@ -38,9 +39,13 @@ if __name__ == '__main__':
 
         # embed()
         # Test Fundamental Matrix
-        fundamental_matrix.show_epipolar_lines(inliers[image_pair], imgs[image_pair[0]], imgs[image_pair[1]])
+        # fundamental_matrix.show_epipolar_lines(inliers[image_pair], imgs[image_pair[0]], imgs[image_pair[1]])
         
-        # extract_cam_pose(E)
+        R,C = extract_cam_pose(E)
+        R0 = np.eye(3)
+        C0 = np.zeros((3,1))
+        for Ri,Ci in zip(R,C):
+            Xn = triangulation(R0,C0,Ri,Ci,inliers[image_pair],K)
 
         # feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], inliers[image_pair], f'Inlier Pairs - {image_pair}')
 

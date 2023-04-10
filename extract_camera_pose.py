@@ -25,6 +25,8 @@ def extract_cam_pose(E):
 
     # print(Cs,Rs)
     Rn,Cn = chk_det(Rs,Cs)
+    
+    return Rn,Cn
 
 def chk_det(Rs,Cs):
     Rn,Cn = [],[]
