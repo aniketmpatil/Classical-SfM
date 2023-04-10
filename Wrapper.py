@@ -4,7 +4,8 @@ import Utils.DataUtils as DataUtils
 import Utils.FeatureUtils as FeatureUtils
 from getInliers import Fundamental_Matrix
 from extract_camera_pose import *
-from LinearTriangulation import*
+from LinearTriangulation import *
+from DisambiguateCameraPose import *
 from IPython import embed
 
 if __name__ == '__main__':
@@ -37,15 +38,23 @@ if __name__ == '__main__':
 
         E = fundamental_matrix.get_essential_from_fundamental()
 
-        # embed()
         # Test Fundamental Matrix
         # fundamental_matrix.show_epipolar_lines(inliers[image_pair], imgs[image_pair[0]], imgs[image_pair[1]])
         
         R,C = extract_cam_pose(E)
         R0 = np.eye(3)
         C0 = np.zeros((3,1))
+
+        max_points = 0
         for Ri,Ci in zip(R,C):
             Xn = triangulation(R0,C0,Ri,Ci,inliers[image_pair],K)
+            valid_points = check_cheirality(Ci, Ri, Xn)
+
+            if (valid_points > max_points):
+                max_points = valid_points
+                C_final = Ci
+                R_final = Ri
+
 
         # feature_utils.plot_matches(imgs[image_pair[0]], imgs[image_pair[1]], inliers[image_pair], f'Inlier Pairs - {image_pair}')
 
