@@ -1,4 +1,5 @@
 from IPython import embed
+import matplotlib.pyplot as plt
 
 
 def check_cheirality(C, R, X_list):
@@ -22,3 +23,13 @@ def check_cheirality(C, R, X_list):
     
     return count_points
 
+def plot(X):
+    X=X.T
+    print(X.shape)
+    print(X[1].shape)
+    fig, ax = plt.subplots()
+    ax.scatter(X[1], X[2],0.7)
+    ax.set_xlabel("x")
+    ax.set_ylabel("z")
+    # ax.legend()
+    plt.show()
