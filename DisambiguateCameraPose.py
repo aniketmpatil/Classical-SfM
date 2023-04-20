@@ -25,8 +25,7 @@ def check_cheirality(C, R, X_list):
 
 def plot(X):
     X=X.T
-    print(X.shape)
-    print(X[1].shape)
+
     fig, ax = plt.subplots()
     ax.scatter(X[1], X[2],0.7)
     ax.set_xlabel("x")

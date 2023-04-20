@@ -30,9 +30,10 @@ def extract_cam_pose(E):
 
 def chk_det(Rs,Cs):
     Rn,Cn = [],[]
+    assert(len(Rs) == len(Cs))
+    print("Number of R and T: ", len(Rs))
     for R,C in zip(Rs,Cs):
         if(np.round(np.linalg.det(R))==-1):
-            print("in")
             Rn.append(-R)
             Cn.append(-C)
         else:
