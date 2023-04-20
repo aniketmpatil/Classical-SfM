@@ -7,7 +7,9 @@ from extract_camera_pose import *
 from LinearTriangulation import *
 from DisambiguateCameraPose import *
 from NonlinearTriangulation import *
+from LinearPnP import*
 from IPython import embed
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -76,6 +78,8 @@ if __name__ == '__main__':
         # if args.debug:
         plot(X_final)
         plot(X_opt)
+        Rn,Cn = LinearPnP(X_final,inliers[image_pair],K,0)
+        print(Rn,Cn)
 
     
         
