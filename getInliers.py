@@ -7,9 +7,9 @@ import numpy as np
 import cv2
 
 class Fundamental_Matrix:
-    def __init__(self, args):
-        self.epsilon = 0.1                # epsilon
-        self.num_iters = 2000              # M
+    def __init__(self, args, matches):
+        self.epsilon = 0.7                # epsilon
+        self.num_iters = 1000             # M
         # self.num_points_ransac = 300    # N
         self.num_inliers = 0
         self.iter_inliers = {}
@@ -18,9 +18,11 @@ class Fundamental_Matrix:
         self.E = np.zeros((3, 3))
         
         self.data_utils = DataUtils(args.basePath)
-        self.feature_utils = FeatureUtils()
-        self.matched_features = self.feature_utils.read_matching_files(args.basePath)
         random.seed(40)
+
+        # self.feature_utils = FeatureUtils()
+        # self.matched_features = self.feature_utils.read_matching_files(args.basePath)
+        self.matched_features = matches
 
     def estimate_fundamental(self, eight_points):
         A = []
