@@ -15,24 +15,22 @@ def LinearPnP(world_points,image_points,K,i):
     u = np.array(image_points[:,i,0])
     v = np.array(image_points[:,i,1])
 
-    print(world_points.shape,image_points.shape)
+    # print(world_points.shape,image_points.shape)
     zero = np.zeros_like(X)
     one = np.ones_like(X)
-    print(X.shape,u.shape,zero.shape)
+    # print(X.shape,u.shape,zero.shape)
     A1 = np.array([X,Y,Z,one,zero,zero,zero,zero,-X*u,-Y*u,-Z*u,-u]).T
     A2 = np.array([zero,zero,zero,zero,X,Y,Z,one,-X*v,-Y*v,-Z*v,-v]).T
     
     A = np.vstack((A1,A2))
     U,S,V = np.linalg.svd(A)
     P = V[np.argmin(S),:]
-    embed()
 
     P = P.reshape((3,4))
     R = np.linalg.inv(K)@P[0:3,0:3]
     UR,SR,VR = np.linalg.svd(R)
 
     R_new = UR@VR
-    embed()
     T = np.linalg.inv(K)@P[:,3]
     
     Rdet = np.linalg.det(R_new)
