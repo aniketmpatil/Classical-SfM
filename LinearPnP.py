@@ -2,7 +2,7 @@ import numpy as np
 from IPython import embed
 
 
-def LinearPnP(world_points,image_points,K,i):
+def LinearPnP(image_points,world_points,K,i=0):
     # X: 3D point
     # x: 2D point in Image plane
     world_points = np.array(world_points)
@@ -12,8 +12,8 @@ def LinearPnP(world_points,image_points,K,i):
     Y = np.array(world_points[:,1])
     Z = np.array(world_points[:,2])
     
-    u = np.array(image_points[:,i,0])
-    v = np.array(image_points[:,i,1])
+    u = np.array(image_points[:,0])
+    v = np.array(image_points[:,1])
 
     # print(world_points.shape,image_points.shape)
     zero = np.zeros_like(X)

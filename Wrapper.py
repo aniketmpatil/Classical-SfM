@@ -8,6 +8,7 @@ from LinearTriangulation import *
 from DisambiguateCameraPose import *
 from NonlinearTriangulation import *
 from LinearPnP import*
+from LinearPnPRANSAC import*
 from IPython import embed
 
 
@@ -73,13 +74,21 @@ if __name__ == '__main__':
                 X_final = Xn
         plt.show()
     
-        X_opt = non_linear_triangulation(inliers[image_pair], Xn, R0, C0, R_final, C_final, K)
+        # X_opt = non_linear_triangulation(inliers[image_pair], Xn, R0, C0, R_final, C_final, K)
 
         # if args.debug:
         plot(X_final)
-        plot(X_opt)
-        Rn,Cn = LinearPnP(X_final,inliers[image_pair],K,0)
-        print(Rn,Cn)
+        # plot(X_opt)
+        X_final = np.array(X_final)
+        x_feat = [a for a,b in inliers[image_pair]]
+        x_feat = np.array(x_feat)
+
+        print(X_final.shape, x_feat.shape)
+
+        # Rn,Cn = LinearPnP(x_feat,X_final,K,0)
+        # print(Rn,Cn)
+        r,c = PnPRANSAC(x_feat,X_final,K)
+        print(r,c)
 
     
         
